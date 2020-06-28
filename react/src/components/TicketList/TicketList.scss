@@ -1,0 +1,7 @@
+@import "../../styles.scss";
+
+.TicketList {
+  & > *:not(:last-child) {
+    border-bottom: 1px solid $border-color;
+  }
+}

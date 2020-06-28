@@ -1,0 +1,40 @@
+@import "../../styles.scss";
+
+.Checkout {
+  .nav {
+    padding: 20px;
+  }
+  .title {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.8rem;
+    padding: 5px 0 35px;
+    border-bottom: 1px solid $border-color;
+  }
+  .orderInfoForm {
+    .groupTitle {
+      background: rgba(black, 0.05);
+      padding: 9px 20px 10px;
+      font-weight: bold;
+    }
+    .inputGroup {
+      padding: 20px;
+    }
+    border-top: 1px solid $border-color;
+    .inputContainer {
+      &:not(:last-child) {
+        margin-bottom: 15px;
+      }
+      .input {
+        width: 100%;
+      }
+    }
+  }
+  .checkoutFooter {
+    border-top: 1px solid $border-color;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

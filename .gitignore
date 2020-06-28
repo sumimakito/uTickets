@@ -1,5 +1,4 @@
-/react/node_modules
-/react/build
+build/
 
 # Logs
 logs

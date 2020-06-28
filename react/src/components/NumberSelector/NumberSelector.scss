@@ -1,0 +1,18 @@
+.NumberSelector {
+  .value {
+    border: 1px solid darken(white, 10%);
+    border-left: none;
+    border-right: none;
+    flex: 1 0 auto;
+    width: 3rem;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    &.readonly {
+      border: none;
+    }
+    .text {
+      font-size: 1.2rem;
+    }
+  }
+}
