@@ -18,3 +18,5 @@ OR
 yarn
 yarn run start:rebuild
 ```
+
+> The server will listen on *localhost:4000* as default
