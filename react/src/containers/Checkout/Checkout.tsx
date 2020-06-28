@@ -8,24 +8,36 @@ import TicketForm from "../../components/TicketForm/TicketForm";
 import TicketList from "../../components/TicketList/TicketList";
 import { FORM_RESET_ACTION } from "../../redux/actions/form";
 import { RootState } from "../../redux/reducers";
+import { postOrder } from "../../services/order";
 import "./Checkout.scss";
 
 const Checkout: React.FC = () => {
   const [isBackModalVisible, setIsBackModalVisible] = useState(false);
+  const [
+    isOrderSubmittedModalVisible,
+    setsOrderSubmittedModalVisible,
+  ] = useState(false);
   const [orderInfoEmail, setOrderInfoEmail] = useState("");
 
   const history = useHistory();
   const { tickets } = useSelector((state: RootState) => state.tickets);
   const selection = useSelector((state: RootState) => state.cart.tickets);
   const ticketInfo = useSelector((state: RootState) => state.form.forms);
+  const isLoading = useSelector((state: RootState) => state.order.isLoading);
   const dispatch = useDispatch();
   const formRef = useRef(null);
 
+  const onUnload = (evt: BeforeUnloadEvent) => {
+    evt.returnValue = "请注意，当前填写的购票信息将不会被保存。";
+  };
+
   useEffect(() => {
+    window.addEventListener("beforeunload", onUnload);
     dispatch({
       type: FORM_RESET_ACTION,
       newTicketInfo: expandTicketInfo(tickets, selection),
     });
+    return () => window.removeEventListener("beforeunload", onUnload);
   }, [tickets, selection, dispatch]);
 
   if (!selection.size) history.push("/");
@@ -46,6 +58,21 @@ const Checkout: React.FC = () => {
       }
     }
     return true;
+  };
+
+  const submitOrder = () => {
+    checkTicketInfoValidity();
+    postOrder({
+      email: orderInfoEmail,
+      tickets: ticketInfo.map((info) => ({
+        type: info.ticket.type,
+        data: info.data,
+      })),
+    }).then(({ data }) => {
+      if (data.result === "ok") {
+        setsOrderSubmittedModalVisible(true);
+      }
+    });
   };
 
   return (
@@ -95,9 +122,10 @@ const Checkout: React.FC = () => {
             <div className="checkoutFooterRight">
               <Button
                 primary
-                onClick={() => console.log(checkTicketInfoValidity())}
+                onClick={() => submitOrder()}
+                disabled={isLoading}
               >
-                继续
+                {isLoading ? "处理中" : "继续"}
               </Button>
             </div>
           </div>
@@ -121,6 +149,24 @@ const Checkout: React.FC = () => {
             content="继续填写"
             onClick={() => setIsBackModalVisible(false)}
           />
+        </Modal.Actions>
+      </Modal>
+      <Modal
+        size="mini"
+        open={isOrderSubmittedModalVisible}
+        onClose={() => {
+          setsOrderSubmittedModalVisible(false);
+          history.push("/");
+        }}
+      >
+        <Modal.Header>订单提交成功</Modal.Header>
+        <Modal.Content>
+          <p>
+            您的订单已提交成功，请注意查收订单邮件并根据邮件内提示完成支付。
+          </p>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button onClick={() => history.push("/")}>继续</Button>
         </Modal.Actions>
       </Modal>
     </React.Fragment>
