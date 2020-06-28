@@ -1,6 +1,10 @@
 uTickets
 ======
 
+A tiny ticket ordering system built with React.js(ts) and Koa.
+
+For demonstration only.
+
 ## Quick start
 
 ```bash
