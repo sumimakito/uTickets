@@ -2,11 +2,13 @@
   "scripts": {
     "build": "cd react && npm run-script build && cd ..",
     "start": "nodemon app.ts",
+    "start:rebuild": "npm run-script build && npm run-script start",
     "tsc": "tsc"
   },
   "dependencies": {
     "@types/bignumber.js": "^5.0.0",
     "@types/koa": "^2.11.3",
+    "@types/koa-bodyparser": "^4.3.0",
     "@types/koa-json": "^2.0.18",
     "@types/koa-mount": "^4.0.0",
     "@types/koa-router": "^7.4.1",
@@ -14,6 +16,7 @@
     "@types/nodemon": "^1.19.0",
     "bignumber.js": "^9.0.0",
     "koa": "^2.13.0",
+    "koa-bodyparser": "^4.3.0",
     "koa-json": "^2.0.2",
     "koa-mount": "^4.0.0",
     "koa-router": "^9.0.1",
